@@ -4,8 +4,11 @@ st.components.v1.html("""
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="google-site-verification" content="Z8q1_ESZgMZb-T9fVWY6Y9TDKDyFqIqF7Sbxn_64b2U" />
-    <title>https://cfucalculator.streamlit.app/ homepage</title>
+    <meta name="description" content="CFU Calculator - Calculate CFU/mL with dilution and volume inputs. Designed for microbiologists!">
+    <meta name="keywords" content="CFU, microbiology, scientific calculator, dilution factor">
+    <meta name="author" content="Dinesh Subedi">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CFU Calculator</title>
 </head>
 </html>
 """, height=0)

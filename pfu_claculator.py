@@ -1,4 +1,9 @@
 import streamlit as st
+# Inject meta tags
+st.components.v1.html("""
+    <head>
+        <meta name="google-site-verification" content="Z8q1_ESZgMZb-T9fVWY6Y9TDKDyFqIqF7Sbxn_64b2U" />
+     
 
 st.title("CFU Calculator")
 

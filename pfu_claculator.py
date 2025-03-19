@@ -59,7 +59,7 @@ elif panel == "Bacteria_Phage Calculation":
 # Panel 3: MOI Calculator
 elif panel == "MOI Calculator":
     st.title("MOI Calculator")
-    st.markdown(r"Equation: $\text{MOI} = \frac{\text{PFU/mL (phage)}}{\text{PFU/mL (bacteria)}}$")
+    st.markdown(r"Equation: $\text{MOI} = \frac{\text{PFU/mL (phage)}}{\text{CFU/mL (bacteria)}}$")
     moi = st.number_input("Enter MOI (Multiplicity of Infection):", value=0.0, step=0.1)
     cfu_per_ml = st.number_input("Enter CFU/mL (e.g., 5 for 10^5):", value=0.0, step=1.0)
     pfu_per_ml = st.number_input("Enter PFU/mL (e.g., 5 for 10^5):", value=0.0, step=1.0)

@@ -59,22 +59,23 @@ elif panel == "Bacteria-Phage density":
 # Panel 3: MOI Calculator
 elif panel == "MOI Calculator":
     st.title("MOI Calculator")
-    st.markdown(r"Equation: $\text{MOI} = \frac{\text{PFU/mL (phage)}}{\text{CFU/mL (bacteria)}}$")
-    moi = st.number_input("Enter MOI (Multiplicity of Infection):", value=0.0, step=0.1)
+    st.markdown(r"**Equation: $\text{MOI} = \frac{\text{PFU/mL (phage)}}{\text{CFU/mL (bacteria)}}$**")
+
+    # User inputs
+    moi = st.number_input("Enter MOI (leave blank if unknown):", value=0.0, step=0.1)
     pfu_per_ml = st.number_input("Enter PFU/mL (e.g., 5 for 10^5):", value=0.0, step=1.0)
     cfu_per_ml = st.number_input("Enter CFU/mL (e.g., 5 for 10^5):", value=0.0, step=1.0)
-    
 
     # Calculate missing value
     if st.button("Calculate Missing Value"):
-        if moi == 0:
+        if moi == 0 and cfu_per_ml > 0:  # Calculate MOI
             moi = pfu_per_ml / cfu_per_ml
             st.success(f"MOI = {moi:.2f}")
-        elif cfu_per_ml == 0:
-            cfu_per_ml = moi * pfu_per_ml
+        elif cfu_per_ml == 0 and moi > 0:  # Calculate CFU/mL
+            cfu_per_ml = pfu_per_ml / moi
             st.success(f"CFU/mL = {cfu_per_ml:.2e}")
-        elif pfu_per_ml == 0:
-            pfu_per_ml = cfu_per_ml / moi
+        elif pfu_per_ml == 0 and moi > 0:  # Calculate PFU/mL
+            pfu_per_ml = moi * cfu_per_ml
             st.success(f"PFU/mL = {pfu_per_ml:.2e}")
         else:
             st.warning("Please leave one field blank to calculate its value.")

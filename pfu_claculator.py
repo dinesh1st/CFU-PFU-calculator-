@@ -87,7 +87,7 @@ elif panel == "CFU Calculator":
 
     # Convert dilution factor (e.g., 5) to 10^5
     if dilution_factor > 0:
-    dilution = 10 ** dilution_factor
+        dilution = 10 ** dilution_factor
     else:
         dilution = 1
 

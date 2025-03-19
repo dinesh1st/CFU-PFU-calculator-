@@ -79,10 +79,10 @@ elif panel == "MOI Calculator":
             st.warning("Please leave one field blank to calculate its value.")
 
 # Panel 4: Original CFU Calculator
-st.title("CFU Calculator")
 
+elif panel == "CFU Calculator":
 # Input fields
-counted_cells = st.number_input("Counted Cells (CFUs):", min_value=0.0, step=1.0, format="%.0f")
+counted_cells = st.number_input("Counted Colonies (CFUs):", min_value=0.0, step=1.0, format="%.0f")
 dilution_factor = st.number_input("Dilution Factor (e.g., enter 5 for 10^5):", min_value=0.0, step=1.0, format="%.0f")
 volume_microliters = st.number_input("Volume Used (μL):", min_value=0.0, step=1.0, format="%.0f")
 

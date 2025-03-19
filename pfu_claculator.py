@@ -8,22 +8,22 @@ panel = st.sidebar.radio("Select a functionality:", ["Volumetric Calculation", "
 if panel == "Volumetric Calculation":
     st.title("Volumetric Calculation")
     st.markdown(r"Equation: $\text{Vol}_1 \times \text{Conc}_1 = \text{Vol}_2 \times \text{Conc}_2$")
-    vol1 = st.number_input("Enter Vol1 (mL):", value=0.0, step=0.1)
+    vol1 = st.number_input("Enter Vol1 (μL):", value=0.0, step=1.0)
     conc1 = st.number_input("Enter Conc1:", value=0.0, step=0.1)
-    vol2 = st.number_input("Enter Vol2 (mL):", value=0.0, step=0.1)
+    vol2 = st.number_input("Enter Vol2 (μL):", value=0.0, step=1.0)
     conc2 = st.number_input("Enter Conc2:", value=0.0, step=0.1)
 
     # Calculate missing value
     if st.button("Calculate Missing Value"):
         if vol1 == 0:
             vol1 = (vol2 * conc2) / conc1
-            st.success(f"Vol1 = {vol1:.2f} mL")
+            st.success(f"Vol1 = {vol1:.2f} μL")
         elif conc1 == 0:
             conc1 = (vol2 * conc2) / vol1
             st.success(f"Conc1 = {conc1:.2f}")
         elif vol2 == 0:
             vol2 = (vol1 * conc1) / conc2
-            st.success(f"Vol2 = {vol2:.2f} mL")
+            st.success(f"Vol2 = {vol2:.2f} μL")
         elif conc2 == 0:
             conc2 = (vol1 * conc1) / vol2
             st.success(f"Conc2 = {conc2:.2f}")
@@ -34,22 +34,22 @@ if panel == "Volumetric Calculation":
 elif panel == "CFU-Based Calculation":
     st.title("CFU-Based Volumetric Calculation")
     st.markdown(r"Equation: $\text{Vol}_1 \times 10^{\text{Conc}_1} = \text{Vol}_2 \times 10^{\text{Conc}_2}$")
-    vol1 = st.number_input("Enter Vol1 (mL):", value=0.0, step=0.1)
+    vol1 = st.number_input("Enter Vol1 (μL):", value=0.0, step=1.0)
     conc1 = st.number_input("Enter Conc1 (e.g., 5 for 10^5):", value=0.0, step=1.0)
-    vol2 = st.number_input("Enter Vol2 (mL):", value=0.0, step=0.1)
+    vol2 = st.number_input("Enter Vol2 (μL):", value=0.0, step=1.0)
     conc2 = st.number_input("Enter Conc2 (e.g., 5 for 10^5):", value=0.0, step=1.0)
 
     # Calculate missing value
     if st.button("Calculate Missing Value"):
         if vol1 == 0:
             vol1 = (vol2 * (10 ** conc2)) / (10 ** conc1)
-            st.success(f"Vol1 = {vol1:.2f} mL")
+            st.success(f"Vol1 = {vol1:.2f} μL")
         elif conc1 == 0:
             conc1 = st.log10((vol2 * (10 ** conc2)) / vol1)
             st.success(f"Conc1 = {conc1:.2f}")
         elif vol2 == 0:
             vol2 = (vol1 * (10 ** conc1)) / (10 ** conc2)
-            st.success(f"Vol2 = {vol2:.2f} mL")
+            st.success(f"Vol2 = {vol2:.2f} μL")
         elif conc2 == 0:
             conc2 = st.log10((vol1 * (10 ** conc1)) / vol2)
             st.success(f"Conc2 = {conc2:.2f}")
@@ -82,23 +82,4 @@ elif panel == "MOI Calculator":
 elif panel == "CFU Calculator":
     st.title("CFU Calculator")
     counted_cells = st.number_input("Counted Cells (CFUs):", min_value=0.0, step=1.0, format="%.0f")
-    dilution_factor = st.number_input("Dilution Factor (e.g., enter 5 for 10^-5):", min_value=0.0, step=1.0, format="%.0f")
-    volume_microliters = st.number_input("Volume Used (μL):", min_value=0.0, step=1.0, format="%.0f")
-
-    if dilution_factor > 0:
-        dilution = 10 ** (-dilution_factor)
-    else:
-        dilution = 1
-
-    volume_milliliters = volume_microliters / 1000.0
-
-    if st.button("Calculate CFU/mL"):
-        if volume_microliters == 0:
-            st.error("Volume cannot be zero.")
-        else:
-            cfu_per_ml = (counted_cells * dilution) / volume_milliliters
-            scientific_notation = "{:.2e}".format(cfu_per_ml)
-            st.success(f"CFU/mL: {scientific_notation}")
-
-st.markdown("---")
-st.markdown("**Credit: Dinesh Subedi**")
+    dilution_factor = st.number_input("Dilution Factor (e.g., enter 5 for 10^-5):", min_value=0.0, step

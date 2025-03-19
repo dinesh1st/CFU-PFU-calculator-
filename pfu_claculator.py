@@ -62,27 +62,31 @@ elif panel == "MOI Calculator":
     st.markdown(r"**Equation: $\text{MOI} = \frac{\text{PFU/mL (phage)}}{\text{CFU/mL (bacteria)}}$**")
 
     # User inputs in logarithmic form
-    moi = st.number_input("Enter MOI (leave blank if unknown):", value=0.0, step=0.1)
-    log_pfu_per_ml = st.number_input("Enter log(PFU/mL) (e.g., 5 for 10^5):", value=0.0, step=1.0)
-    log_cfu_per_ml = st.number_input("Enter log(CFU/mL) (e.g., 5 for 10^5):", value=0.0, step=1.0)
+    moi = st.number_input("Enter MOI (leave blank if unknown, set to 0.0):", value=0.0, step=0.1)
+    log_pfu_per_ml = st.number_input("Enter log(PFU/mL) (e.g., 5 for 10^5, leave blank if unknown, set to 0.0):", value=0.0, step=1.0)
+    log_cfu_per_ml = st.number_input("Enter log(CFU/mL) (e.g., 5 for 10^5, leave blank if unknown, set to 0.0):", value=0.0, step=1.0)
 
-    # Convert log values to standard numbers
-    pfu_per_ml = 10 ** log_pfu_per_ml
-    cfu_per_ml = 10 ** log_cfu_per_ml
+    # Convert log values to standard numbers (only if not zero)
+    pfu_per_ml = 10 ** log_pfu_per_ml if log_pfu_per_ml > 0 else 0.0
+    cfu_per_ml = 10 ** log_cfu_per_ml if log_cfu_per_ml > 0 else 0.0
 
     # Calculate missing value
     if st.button("Calculate Missing Value"):
-        if moi == 0 and cfu_per_ml > 0:  # Calculate MOI
-            moi = pfu_per_ml / cfu_per_ml
-            st.success(f"MOI = {moi:.2f}")
-        elif cfu_per_ml == 0 and moi > 0:  # Calculate CFU/mL
-            cfu_per_ml = pfu_per_ml / moi
-            st.success(f"CFU/mL = {cfu_per_ml:.2e} (Logarithmic: {math.log10(cfu_per_ml):.2f})")
-        elif pfu_per_ml == 0 and moi > 0:  # Calculate PFU/mL
-            pfu_per_ml = moi * cfu_per_ml
-            st.success(f"PFU/mL = {pfu_per_ml:.2e} (Logarithmic: {math.log10(pfu_per_ml):.2f})")
+        # Check if exactly one field is missing
+        num_missing = sum([moi == 0, pfu_per_ml == 0, cfu_per_ml == 0])
+        
+        if num_missing == 1:  # Ensure only one field is blank
+            if moi == 0:  # Calculate MOI
+                moi = pfu_per_ml / cfu_per_ml
+                st.success(f"MOI = {moi:.2f}")
+            elif cfu_per_ml == 0:  # Calculate CFU/mL
+                cfu_per_ml = pfu_per_ml / moi
+                st.success(f"CFU/mL = {cfu_per_ml:.2e} (Logarithmic: {math.log10(cfu_per_ml):.2f})")
+            elif pfu_per_ml == 0:  # Calculate PFU/mL
+                pfu_per_ml = moi * cfu_per_ml
+                st.success(f"PFU/mL = {pfu_per_ml:.2e} (Logarithmic: {math.log10(pfu_per_ml):.2f})")
         else:
-            st.warning("Please leave one field blank to calculate its value.")
+            st.warning("Please leave exactly one field blank to calculate its value.")
 
 # Panel 4: Original CFU/PFU Calculator
 elif panel == "CFU/PFU Calculator":

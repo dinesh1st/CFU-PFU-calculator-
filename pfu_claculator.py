@@ -2,7 +2,7 @@ import streamlit as st
 
 # Sidebar for navigation
 st.sidebar.title("Choose a Calculator")
-panel = st.sidebar.radio("Select a functionality:", ["Volumetric Calculation", "CFU-Based Calculation", "MOI Calculator", "CFU Calculator"])
+panel = st.sidebar.radio("Select:", ["Volumetric Calculation", "Bacteria_Phage Calculation", "MOI Calculator", "CFU Calculator"])
 
 # Panel 1: Volumetric Calculation
 if panel == "Volumetric Calculation":
@@ -30,9 +30,9 @@ if panel == "Volumetric Calculation":
         else:
             st.warning("Please leave one field blank to calculate its value.")
 
-# Panel 2: CFU-Based Volumetric Calculation
-elif panel == "CFU-Based Calculation":
-    st.title("CFU-Based Volumetric Calculation")
+# Panel 2: Bacteria_Phage Calculation
+elif panel == "Bacteria_Phage Calculation":
+    st.title("Bacteria_Phage Calculation")
     st.markdown(r"Equation: $\text{Vol}_1 \times 10^{\text{Conc}_1} = \text{Vol}_2 \times 10^{\text{Conc}_2}$")
     vol1 = st.number_input("Enter Vol1 (μL):", value=0.0, step=1.0)
     conc1 = st.number_input("Enter Conc1 (e.g., 5 for 10^5):", value=0.0, step=1.0)
@@ -59,7 +59,7 @@ elif panel == "CFU-Based Calculation":
 # Panel 3: MOI Calculator
 elif panel == "MOI Calculator":
     st.title("MOI Calculator")
-    st.markdown(r"Equation: $\text{MOI} = \frac{\text{CFU/mL (bacteria)}}{\text{PFU/mL (phage)}}$")
+    st.markdown(r"Equation: $\text{MOI} = \frac{\text{PFU/mL (phage)}}{\text{PFU/mL (bacteria)}}$")
     moi = st.number_input("Enter MOI (Multiplicity of Infection):", value=0.0, step=0.1)
     cfu_per_ml = st.number_input("Enter CFU/mL (e.g., 5 for 10^5):", value=0.0, step=1.0)
     pfu_per_ml = st.number_input("Enter PFU/mL (e.g., 5 for 10^5):", value=0.0, step=1.0)

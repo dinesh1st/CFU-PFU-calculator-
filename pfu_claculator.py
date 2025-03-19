@@ -82,4 +82,21 @@ elif panel == "MOI Calculator":
 elif panel == "CFU Calculator":
     st.title("CFU Calculator")
     counted_cells = st.number_input("Counted Cells (CFUs):", min_value=0.0, step=1.0, format="%.0f")
-    dilution_factor = st.number_input("Dilution Factor (e.g., enter 5 for 10^-5):", min_value=0.0, step
+    dilution_factor = st.number_input("Dilution Factor (e.g., enter 5 for 10^-5):", min_value=0.0, step=1.0, format="%.0f")
+    volume_microliters = st.number_input("Volume Used (μL):", min_value=0.0, step=1.0, format="%.0f")
+
+    if dilution_factor > 0:
+        dilution = 10 ** (-dilution_factor)
+    else:
+        dilution = 1
+
+    if st.button("Calculate CFU/mL"):
+        if volume_microliters == 0:
+            st.error("Volume cannot be zero.")
+        else:
+            cfu_per_ml = (counted_cells * dilution) / volume_microliters
+            scientific_notation = "{:.2e}".format(cfu_per_ml)
+            st.success(f"CFU/mL: {scientific_notation}")
+
+st.markdown("---")
+st.markdown("**Credit: Dinesh Subedi**")

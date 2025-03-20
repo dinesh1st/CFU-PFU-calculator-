@@ -1,4 +1,5 @@
 import streamlit as st
+import math
 
 # Sidebar for navigation
 st.sidebar.title("Choose a Calculator")
@@ -71,29 +72,38 @@ elif panel == "MOI Calculator":
     cfu_per_ml = 10 ** log_cfu_per_ml if log_cfu_per_ml > 0 else 0.0
 
     # Calculate missing value
-if st.button("Calculate Missing Value"):
-    # Check if exactly one field is missing
-    num_missing = sum([moi == 0, pfu_per_ml == 0, cfu_per_ml == 0])
-    
-    if num_missing == 1:  # Ensure only one field is blank
-        if moi == 0:  # Calculate MOI
-            moi = pfu_per_ml / cfu_per_ml
-            st.success(f"MOI = {moi:.2f}")
-        elif cfu_per_ml == 0:  # Calculate CFU/mL
-            cfu_per_ml = pfu_per_ml / moi
-            if cfu_per_ml > 0:
-                st.success(f"CFU/mL = {cfu_per_ml:.2e} (Logarithmic: {math.log10(cfu_per_ml):.2f})")
-            else:
-                st.error("CFU/mL cannot be 0 or negative.")
-        elif pfu_per_ml == 0:  # Calculate PFU/mL
-            pfu_per_ml = moi * cfu_per_ml
-            if pfu_per_ml > 0:
-                st.success(f"PFU/mL = {pfu_per_ml:.2e} (Logarithmic: {math.log10(pfu_per_ml):.2f})")
-            else:
-                st.error("PFU/mL cannot be 0 or negative.")
-    else:
-        st.warning("Please leave exactly one field blank to calculate its value.")
-
+    if st.button("Calculate Missing Value"):
+        # Check if exactly one field is missing
+        num_missing = sum([moi == 0, pfu_per_ml == 0, cfu_per_ml == 0])
+        
+        if num_missing == 1:  # Ensure only one field is blank
+            if moi == 0:  # Calculate MOI
+                if cfu_per_ml > 0:
+                    moi = pfu_per_ml / cfu_per_ml
+                    st.success(f"MOI = {moi:.2f}")
+                else:
+                    st.error("CFU/mL must be greater than 0 to calculate MOI.")
+            elif cfu_per_ml == 0:  # Calculate CFU/mL
+                if moi > 0:
+                    cfu_per_ml = pfu_per_ml / moi
+                    if cfu_per_ml > 0:
+                        st.success(f"CFU/mL = {cfu_per_ml:.2e} (Logarithmic: {math.log10(cfu_per_ml):.2f})")
+                    else:
+                        st.error("CFU/mL cannot be 0 or negative.")
+                else:
+                    st.error("MOI must be greater than 0 to calculate CFU/mL.")
+            elif pfu_per_ml == 0:  # Calculate PFU/mL
+                if moi > 0:
+                    pfu_per_ml = moi * cfu_per_ml
+                    if pfu_per_ml > 0:
+                        st.success(f"PFU/mL = {pfu_per_ml:.2e} (Logarithmic: {math.log10(pfu_per_ml):.2f})")
+                    else:
+                        st.error("PFU/mL cannot be 0 or negative.")
+                else:
+                    st.error("MOI must be greater than 0 to calculate PFU/mL.")
+        else:
+            st.warning("Please leave exactly one field blank to calculate its value.")
+            
 # Panel 4: Original CFU/PFU Calculator
 elif panel == "CFU/PFU Calculator":
     st.title("CFU/PFU Calculator")
